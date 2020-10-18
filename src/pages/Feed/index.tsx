@@ -22,6 +22,7 @@ const Feed: React.FC = () => {
             <Header></Header>
             <Scroll showsVerticalScrollIndicator={false}>
             <Textarea/>
+
             <Piu
                 profileName='Davi'
                 profileUsername='@davi9854'

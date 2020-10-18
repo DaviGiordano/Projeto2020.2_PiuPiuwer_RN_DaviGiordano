@@ -1,16 +1,16 @@
 import { RectButton } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 
+
 export const Container = styled.View`
     width:100%;
-    height:200px;
+    height:150px;
     margin-top:10px;
-    margin-bottom:10px;
 `;
 
 export const TextareaComponent = styled.TextInput`
     width:100%;
-    height:50px;
+    flex:2;
     padding:10px;
     background-color:#fff;
     border-width:1px;
@@ -18,9 +18,36 @@ export const TextareaComponent = styled.TextInput`
     border-radius:5px;
 `;
 
-export const Button = styled(RectButton)`
+export const SendButton = styled(RectButton)`
     margin-top:10px;
-    width:100px;
-    height:30px;
+    width:70px;
+    height:40px;
+    border-radius:10px;
     background-color:#04d361;
+    flex-direction:row;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:10px;
+    margin-right:10px;
+    align-self:flex-end;
+`;
+
+export const ButtonText = styled.Text`
+    font-family:Quicksand_600SemiBold;
+    color:#003F88;
+    text-align:center;
+    font-size:16px;
+    margin-left:5px;
+`;
+
+
+export const ToggleTextarea = styled(RectButton)`
+    width:150px;
+    height:40px;
+    flex-direction:row;
+    align-items:center;
+    justify-content:center;
+    margin-top:10px;
+    margin-bottom:5px;
+
 `;

@@ -61,7 +61,7 @@ const Piu: React.FC<PiuProps> = ({
                 </ActionButton >
                 <ActionButton onPress={toggleFavorite}>
                     {favoritedStatus? 
-                    <Feather name="star" color={'yellow'} size={24}></Feather>
+                    <Feather name="star" color={'green'} size={24}></Feather>
                     : <Feather name="star" color={'grey'}  size={24}></Feather>
                 }
                 </ActionButton >
