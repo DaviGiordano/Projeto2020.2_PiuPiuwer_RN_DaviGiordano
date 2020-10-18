@@ -23,8 +23,24 @@ const Feed: React.FC = () => {
                 profileName='Davi'
                 profileUsername='@davi9854'
                 piuText='lallalalalalalalalallalalalalala'
+                isLiked={false}
+                isFavorited={false}
+                isDeletable={false}
+            />
+            <Piu
+                profileName='Davi'
+                profileUsername='@davi9854'
+                piuText='lallalalalalalalalallalalalalala'
                 isLiked={true}
-                isPinned={false}
+                isFavorited={false}
+                isDeletable={false}
+            />
+            <Piu
+                profileName='Davi'
+                profileUsername='@davi9854'
+                piuText='lallalalalalalalalallalalalalala'
+                isLiked={true}
+                isFavorited={false}
                 isDeletable={true}
             />
             <Piu
@@ -32,7 +48,7 @@ const Feed: React.FC = () => {
                 profileUsername='@davi9854'
                 piuText='lallalalalalalalalallalalalalala'
                 isLiked={true}
-                isPinned={false}
+                isFavorited={false}
                 isDeletable={true}
             />
             <Piu
@@ -40,7 +56,7 @@ const Feed: React.FC = () => {
                 profileUsername='@davi9854'
                 piuText='lallalalalalalalalallalalalalala'
                 isLiked={true}
-                isPinned={false}
+                isFavorited={false}
                 isDeletable={true}
             />
             <Piu
@@ -48,23 +64,7 @@ const Feed: React.FC = () => {
                 profileUsername='@davi9854'
                 piuText='lallalalalalalalalallalalalalala'
                 isLiked={true}
-                isPinned={false}
-                isDeletable={true}
-            />
-            <Piu
-                profileName='Davi'
-                profileUsername='@davi9854'
-                piuText='lallalalalalalalalallalalalalala'
-                isLiked={true}
-                isPinned={false}
-                isDeletable={true}
-            />
-            <Piu
-                profileName='Davi'
-                profileUsername='@davi9854'
-                piuText='lallalalalalalalalallalalalalala'
-                isLiked={true}
-                isPinned={false}
+                isFavorited={false}
                 isDeletable={true}
             />
             

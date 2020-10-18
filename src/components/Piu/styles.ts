@@ -1,3 +1,4 @@
+import { RectButton } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 
 export const PiuContainer = styled.View`
@@ -60,6 +61,18 @@ export const PiuText = styled.Text`
 export const PiuFooter = styled.View`
     width:100%;
     flex:1;
+    flex-direction:row;
+    align-items: center;
+    justify-content:space-around;
     background-color:blue;
     background-color:#e6e6f0;
+`;
+
+export const ActionButton = styled(RectButton)`
+    width:40px;
+    height:40px;
+    align-items:center;
+    justify-content:center;
+    
+    
 `;
