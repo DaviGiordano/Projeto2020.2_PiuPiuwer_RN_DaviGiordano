@@ -9,7 +9,6 @@ export const Container = styled.View`
 `;
 export const Scroll = styled.ScrollView`
     width:100%;
-    margin-top:30px;
     padding-left:10px;
     padding-right:10px;
 `;

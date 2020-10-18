@@ -73,6 +73,4 @@ export const ActionButton = styled(RectButton)`
     height:40px;
     align-items:center;
     justify-content:center;
-    
-    
 `;

@@ -21,7 +21,10 @@ export default function App() {
     return <AppLoading />;
   }else{
     return(
+      <>
       <AppStack></AppStack>
+      <StatusBar style='auto' ></StatusBar>
+      </>
     );
 
   }

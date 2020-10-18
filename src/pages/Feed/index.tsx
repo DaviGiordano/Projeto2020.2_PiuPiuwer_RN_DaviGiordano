@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native'
 import { Container, Scroll } from './styles';
 import Piu from '../../components/Piu';
 import { ScrollView } from 'react-native-gesture-handler';
+import Header from '../../components/Header';
+import Textarea from '../../components/Textarea';
 
 const Feed: React.FC = () => {
 
@@ -17,8 +19,9 @@ const Feed: React.FC = () => {
 
     return (
         <Container>
-            <Text onPress={handleSignOut}>FeedPage</Text>
+            <Header></Header>
             <Scroll showsVerticalScrollIndicator={false}>
+            <Textarea/>
             <Piu
                 profileName='Davi'
                 profileUsername='@davi9854'
