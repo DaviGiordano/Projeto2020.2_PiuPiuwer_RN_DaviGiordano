@@ -21,10 +21,10 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState<string>('');
 
     const handleLogin = useCallback(() => {
-        console.log(username);
+        console.log({username,password});
 
         navigate('Feed');
-    }, [navigate]);
+    }, [navigate, username, password]);
 
     return (
     <Container>
