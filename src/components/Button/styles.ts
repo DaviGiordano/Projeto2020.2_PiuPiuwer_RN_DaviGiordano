@@ -10,7 +10,6 @@ export const ButtonContainer = styled.TouchableOpacity`
     border-radius:50px;
 `;
 
-
 export const ButtonText = styled.Text`
     font-family:Quicksand_600SemiBold;
     color:#003F88;
