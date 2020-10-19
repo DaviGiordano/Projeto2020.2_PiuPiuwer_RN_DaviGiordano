@@ -12,8 +12,8 @@ function AppStack(){
     return(
         <NavigationContainer>
             <Navigator screenOptions={{headerShown:false}}>
-                <Screen name="Feed" component={Feed}/>
                 <Screen name="Login" component={Login}/>
+                <Screen name="Feed" component={Feed}/>
             
             </Navigator>
         </NavigationContainer>
