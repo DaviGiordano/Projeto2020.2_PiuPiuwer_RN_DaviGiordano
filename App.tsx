@@ -1,15 +1,22 @@
 import React from 'react';
+
 import { StatusBar } from 'expo-status-bar';
 import { AppLoading } from 'expo';
+
 import { ImageBackground, StyleSheet, Text, View, Image } from 'react-native';
+
 import { useFonts, Quicksand_400Regular,Quicksand_600SemiBold } from '@expo-google-fonts/quicksand';
 
 import Login from './src/pages/Login';
-import AppStack from './src/routes/AppStack';
+import Routes from './src/routes';
 
+import { NavigationContainer } from '@react-navigation/native';
 
+import { AuthProvider } from './src/contexts/auth'
 
 export default function App() {
+
+
 
   let [fontsLoaded] = useFonts({
     Quicksand_400Regular,
@@ -21,10 +28,12 @@ export default function App() {
     return <AppLoading />;
   }else{
     return(
-      <>
-      <AppStack></AppStack>
-      <StatusBar style='auto' ></StatusBar>
-      </>
+      <NavigationContainer>
+        <AuthProvider>
+          <Routes/>
+          <StatusBar style='auto' ></StatusBar>
+        </AuthProvider>
+      </NavigationContainer>
     );
 
   }

@@ -7,21 +7,22 @@ import { ActionButton, PiuContainer, PiuFooter, PiuHeader, PiuMain, PiuText, Pro
 interface PiuProps{
     profileImage?:string;
     profileName:string;
-    profileUsername:string;
     piuText:string;
     isLiked:boolean;
     isFavorited:boolean;
     isDeletable:boolean;
+    //likeCount:number;
+
 }
 
 const Piu: React.FC<PiuProps> = ({
     profileName,
-    profileUsername,
     profileImage,
     piuText,
     isDeletable,
     isLiked,
-    isFavorited
+    isFavorited,
+    
 }) => {
 
     const [likedStatus, setLikedStatus] = useState(isLiked);
@@ -40,10 +41,8 @@ const Piu: React.FC<PiuProps> = ({
             <PiuHeader >
                 <ProfileImage source={{uri: profileImage}}/>
                 <ProfileName>
-                    {` `}{profileName}{` `}
-                    <ProfileUsername>
-                        {profileUsername}
-                    </ProfileUsername>
+                    {` `}{profileName}
+                    
                 </ProfileName>
                 
             </PiuHeader>

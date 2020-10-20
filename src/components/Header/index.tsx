@@ -7,14 +7,17 @@ import { HeaderContainer, Icon, Title } from './styles';
 import { ActionButton } from '../Piu/styles';
 
 import Logo from '../../assets/images/icons/logo.png'
+import { useAuth } from '../../contexts/auth';
 
 
 const Header: React.FC = () => {
 
+    const { signOut } = useAuth();
+
     const handleLogOut = useCallback(()=>{
-        alert('logged Out!');
+        signOut();
         //logOut();
-    },[]);
+    },[signOut]);
         
    
 
