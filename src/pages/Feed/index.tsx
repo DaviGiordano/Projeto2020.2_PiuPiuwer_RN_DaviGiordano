@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Text, View } from 'react-native';
+import { Button, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
 
 import { Container, Scroll } from './styles';
@@ -13,22 +13,7 @@ import axios from 'axios';
 const Feed: React.FC = () => {
     
     const { token, user } = useAuth(); 
-    const { navigate } = useNavigation();
     const [pius, setPius] = useState<Array<PiuData>>([]);
-
-    const handleGetPius = useCallback(async () => {
-        const response = await axios({
-        url: 'http://piupiuwer.polijr.com.br/pius/',
-        method: 'GET',
-        headers: {
-            Authorization: `JWT ${token}`
-        }
-        })
-        if(response.data){
-            console.log(response.data);
-            setSortedPius(response.data);
-        }
-    },[token]);
 
     const favoritedPiusIdsCallback = useCallback((pius: Array<PiuData>)=>{
         const favoritedPius = pius.filter(piu => {
@@ -61,16 +46,143 @@ const Feed: React.FC = () => {
         newPius.sort((a,b) => Date.parse(b.horario) - Date.parse(a.horario));
         //depois organizar por favoritado
         newPius.sort(compareFavorite);
-        
+        //console.log(newPius)
         setPius(newPius);
+        
     },[setPius,favoritedPiusIdsCallback,user]);
+
+    const handleGetPius = useCallback(async () => {
+        const response = await axios({
+        url: 'http://piupiuwer.polijr.com.br/pius/',
+        method: 'GET',
+        headers: {
+            Authorization: `JWT ${token}`
+        }
+        })
+
+        if(response.data){
+            //console.log(response.data);
+            setSortedPius(response.data);
+            
+            console.log({pius: pius});
+            //setSortedPius(response.data);
+            //console.log(pius)
+        }
+    },[token,setSortedPius]);
+
+    const sendPiu = useCallback( async (mensagemInput:string)=>{
+
+        const response = await axios({
+            url: 'http://piupiuwer.polijr.com.br/pius/',
+            method: 'POST',
+            headers: {
+                Authorization: `JWT ${token}`
+            },
+            data: {
+                usuario: user.id,
+                texto: mensagemInput
+            }
+        })    
+        console.log({piusantes: pius})
+        setSortedPius([response.data, ...pius]);
+        console.log({piusdepois: pius})
+        /*ADIÇAO DIRETA DO PIU À LISTA */
+        if(response.data){
+            //console.log(pius);
+        }
+    },[user,token,pius,setSortedPius]);
+
+    const delThisPiu = useCallback( async (piu: PiuData)=>{
+        const piuId = piu.id
+        console.log(piu.id);
+        const response = await axios({
+          url: `http://piupiuwer.polijr.com.br/pius/${piuId}`,
+          method: 'DELETE',
+          headers: {
+            Authorization: `JWT ${token}`
+          }
+        })
+        //7console.log(response);
+        //console.log('Piu Deletado');
+        handleGetPius();
+    },[token,handleGetPius]);
 
     useEffect(()=>{
         if(!!token){
             handleGetPius();
-            console.log(favoritedPiusIds);
+            //console.log(favoritedPiusIds);
         }
     },[token]);
+
+    
+
+    const pinThisPiu = useCallback( async (item:PiuData) => {
+        const userId = user.id
+        const piuId = item.id
+        
+        const newPius = pius.map( piu =>{
+        //  não consigo comparar objetos, então comparo suas keys (ids)
+          const favoritadosIds = piu.favoritado_por.map(user => user.id);
+          
+          //estrutura ternária sensacional
+          return piu.id === item.id 
+            ? {
+              ...piu,
+              favoritado_por: favoritadosIds.includes(user.id) 
+                ? piu.favoritado_por.filter(item => item.id != user.id) 
+                : [ ...piu.favoritado_por, user ]  
+            }
+            : piu;
+    
+        });
+        //console.log(newPius);
+        setSortedPius(newPius);
+        const response = await axios({
+          url: 'http://piupiuwer.polijr.com.br/pius/favoritar/',
+          method: 'POST',
+          headers: {
+              Authorization: `JWT ${token}`
+          },
+          data: {
+            usuario: userId,
+            piu: piuId
+          }
+        })
+        //handleGetPius();
+      }, [token, user,pius,setSortedPius]);
+
+    const likeThisPiu = useCallback( async (item:PiuData) => {
+        const userId = user.id
+        const piuId = item.id
+        
+        const newPius = pius.map( piu =>{
+          const likersIds = piu.likers.map(user => user.id);
+    
+          return piu.id === item.id
+          ? {
+            ...piu,
+            likers: likersIds.includes(user.id)
+            ?  piu.likers.filter(item => item.id != user.id)
+            :  [ ...piu.likers, user]
+          }
+          : piu;
+    
+          
+        });
+        setSortedPius(newPius);
+        
+        const response = await axios({
+          url: 'http://piupiuwer.polijr.com.br/pius/dar-like/',
+          method: 'POST',
+          headers: {
+              Authorization: `JWT ${token}`
+          },
+          data: {
+            usuario: userId,
+            piu: piuId
+          }
+        })
+      }, [token, user,pius,setSortedPius]);
 
     const renderPius = useCallback(()=>{
         return pius.map((item) =>{
@@ -85,28 +197,28 @@ const Feed: React.FC = () => {
               isDeletable={item.usuario.id == user.id}
               //likeCount={item.likers.length}
               //isFollowing={piusByFollowedUsersIds.includes(item.id)}
-            //   handlePin={
-            //     ()=>{pinThisPiu(item)}           
-            //   }
-            //   handleDel={
-            //     ()=>{delThisPiu(item)}
-            //   }
-            //   handleLike={
-            //     () => {likeThisPiu(item)}
-            //   }
+              handleFavorite={
+                ()=>{pinThisPiu(item)}           
+              }
+              handleDelete={
+                ()=>{delThisPiu(item)}
+              }
+              handleLike={
+                () => {likeThisPiu(item)}
+              }
             //   handleFollow={
             //     () => {followThisUser(item)}
             //   }
             />
           );
         })
-      }, [/*pinThisPiu,delThisPiu,*/pius,likedPiusIds,user]);
+      }, [pinThisPiu,delThisPiu,pius,likedPiusIds,user,favoritedPiusIds]);
       
     return (
         <Container>
             <Header ></Header>
             <Scroll showsVerticalScrollIndicator={false}>
-            <Textarea/>
+            <Textarea handleSendPiu={sendPiu}/>
                 {renderPius()}
             </Scroll>
             

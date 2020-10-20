@@ -8,7 +8,7 @@ interface inputProps extends TextInputProps{
 }
 
 const Input: React.FC<inputProps> = ({placeholderText,...rest}) => {
-    return <InputContainer {...rest} placeholder={placeholderText} ></InputContainer>;
+    return <InputContainer {...rest} autoCapitalize={'none'} autoCorrect={false} placeholder={placeholderText} ></InputContainer>;
 }
 
 export default Input;

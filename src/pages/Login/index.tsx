@@ -47,7 +47,7 @@ const Login: React.FC = () => {
         >
             <Image source={logoBig}></Image>
             <Input value={username} onChangeText={(text:string) => setUsername(text)} placeholderText={'Usuário'}/>
-            <Input value={password} onChangeText={(text:string) => setPassword(text)} placeholderText={'Senha'}/>
+            <Input secureTextEntry ={true} value={password} onChangeText={(text:string) => setPassword(text)} placeholderText={'Senha'}/>
             <Button isLoading={isButtonLoading}  onPress={() => handleSignIn(username,password)}></Button>   
             <Warning>{logInWarning}</Warning>
         </Background>

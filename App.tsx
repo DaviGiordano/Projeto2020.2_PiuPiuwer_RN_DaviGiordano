@@ -3,7 +3,7 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { AppLoading } from 'expo';
 
-import { ImageBackground, StyleSheet, Text, View, Image } from 'react-native';
+import { ImageBackground, StyleSheet, Text, View, Image, SafeAreaView } from 'react-native';
 
 import { useFonts, Quicksand_400Regular,Quicksand_600SemiBold } from '@expo-google-fonts/quicksand';
 
@@ -34,6 +34,7 @@ export default function App() {
           <StatusBar style='auto' ></StatusBar>
         </AuthProvider>
       </NavigationContainer>
+      
     );
 
   }

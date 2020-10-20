@@ -19,9 +19,6 @@ export const TextareaComponent = styled.TextInput<FormProps>`
     border-width:1px;
     border-color: ${props => (props.isStyledPiuValid ? 'black' : 'red')};
     border-radius:5px;
-
-
-
 `;
 
 export const SendButton = styled(RectButton)<FormProps>`

@@ -11,6 +11,9 @@ interface PiuProps{
     isLiked:boolean;
     isFavorited:boolean;
     isDeletable:boolean;
+    handleDelete():void;
+    handleFavorite():void;
+    handleLike():void;
     //likeCount:number;
 
 }
@@ -22,6 +25,9 @@ const Piu: React.FC<PiuProps> = ({
     isDeletable,
     isLiked,
     isFavorited,
+    handleDelete,
+    handleFavorite,
+    handleLike
     
 }) => {
 
@@ -30,9 +36,11 @@ const Piu: React.FC<PiuProps> = ({
 
     const toggleLike = useCallback(()=>{
         setLikedStatus(!likedStatus);
-    },[setLikedStatus,likedStatus]);
+        handleLike();
+    },[setLikedStatus,likedStatus,handleLike]);
     const toggleFavorite = useCallback(()=>{
         setFavoritedStatus(!favoritedStatus);
+        handleFavorite();
     },[setFavoritedStatus,favoritedStatus]);
     
 
@@ -52,19 +60,19 @@ const Piu: React.FC<PiuProps> = ({
                 </PiuText>
             </PiuMain>
             <PiuFooter>
-                <ActionButton onPress={toggleLike}>
+                <ActionButton  onPress={()=>{toggleLike();}}>
                     {likedStatus? 
                     <Feather name="heart" color={'red'} size={24}></Feather>
                     : <Feather name="heart" color={'grey'}  size={24}></Feather>
                 }
                 </ActionButton >
-                <ActionButton onPress={toggleFavorite}>
+                <ActionButton onPress={()=>{toggleFavorite();}}>
                     {favoritedStatus? 
-                    <Feather name="star" color={'green'} size={24}></Feather>
+                    <Feather name="star" color={'blue'} size={24}></Feather>
                     : <Feather name="star" color={'grey'}  size={24}></Feather>
                 }
                 </ActionButton >
-                <ActionButton enabled={isDeletable} >
+                <ActionButton enabled={isDeletable} onPress={handleDelete} >
                 
                     {isDeletable && <Feather name="trash" size={24}></Feather> }
                 </ActionButton>

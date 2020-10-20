@@ -5,9 +5,12 @@ import { Feather } from '@expo/vector-icons'
 import Input from '../Input'
 import { Container, TextareaComponent, ButtonText, ToggleTextarea, SendButton, Warning } from './styles';
 
+interface TextAreaProps {
+  handleSendPiu(text:string):void;
+}
 
 
-const Textarea: React.FC = () => {
+const Textarea: React.FC<TextAreaProps> = ({handleSendPiu}) => {
   const [isToggled, setIsToggled] = useState(false);
   const [inputedText, setInputedText] = useState('');
   const [isPiuValid, setIsPiuValid] = useState(true);
@@ -17,6 +20,16 @@ const Textarea: React.FC = () => {
     setIsToggled(!isToggled);
   },[setIsToggled,isToggled]);
 
+  const handleTrySendPiu = useCallback((text:string)=>{
+    if(!text){
+      setWarning('O campo não pode estar vazio')
+      setIsPiuValid(false);
+    }else{
+      setInputedText('');
+      handleSendPiu(text);
+    }
+  },[setWarning, handleSendPiu, setIsPiuValid]);
+
   const handleTextFilter = useCallback((text:string)=>{
     setInputedText(text);
     console.log(text);
@@ -24,7 +37,7 @@ const Textarea: React.FC = () => {
       setIsPiuValid(false);
       setWarning('Ultrapassou limite de caracteres (140)');
     }
-    if(!isPiuValid && text.length<140){
+    if(text.length != 0 && text.length<140){
       setWarning('');
       setIsPiuValid(true);
     }
@@ -51,7 +64,7 @@ const Textarea: React.FC = () => {
         numberOfLines={4}
         ></TextareaComponent>
         <Warning>{warning}</Warning>
-        <SendButton isStyledPiuValid={isPiuValid} enabled={isPiuValid}>
+        <SendButton onPress={() =>{handleTrySendPiu(inputedText)}} isStyledPiuValid={isPiuValid} enabled={isPiuValid}>
           <Feather name={'send'} color={'white'} size={24}></Feather>
         </SendButton>
         </Container>
