@@ -34,6 +34,9 @@ export const SendButton = styled(RectButton)<FormProps>`
     margin-right:10px;
     align-self:flex-end;
     opacity:1;
+    border-color:#e6e6f0;
+
+
     ${props =>
 	    !props.isStyledPiuValid &&
 	    css`
@@ -66,4 +69,11 @@ export const Warning = styled.Text`
     font-family:Quicksand_400Regular;
     color:#e33d3d;
     font-size:14px;
+`;
+
+export const TextLenghtCounter = styled.Text<FormProps>`
+    font-family:Quicksand_400Regular;
+    font-size:12px;
+    color: ${props => (props.isStyledPiuValid ? 'black' : 'red')};
+
 `;

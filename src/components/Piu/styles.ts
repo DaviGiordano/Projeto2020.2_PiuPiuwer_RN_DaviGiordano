@@ -69,8 +69,15 @@ export const PiuFooter = styled.View`
 `;
 
 export const ActionButton = styled(RectButton)`
-    width:40px;
+    width:50px;
     height:40px;
     align-items:center;
     justify-content:center;
+    flex-direction:row;
+`;
+
+export const LikeCounter = styled.Text`
+    font-family:Quicksand_400Regular;
+    font-size:12px;
+    color:red;
 `;

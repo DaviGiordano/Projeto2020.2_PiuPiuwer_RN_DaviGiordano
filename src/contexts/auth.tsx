@@ -45,12 +45,12 @@ export const AuthProvider: React.FC = ({children}) => {
     /**USE EFFECT -> LOAD STORAGE DATA */
     useEffect(()=>{
         async function loadStorageData() {
-            const storagedUser = await AsyncStorage.getItem(`@Project:user`);
-            const storagedToken = await AsyncStorage.getItem(`@Project:token`);
-            
-            if(storagedUser && storagedToken){
-            setUser(JSON.parse(storagedUser));
-            setToken(storagedToken);
+            //const storagedUser = await AsyncStorage.getItem(`@Project:user`);
+            //const storagedToken = await AsyncStorage.getItem(`@Project:token`);
+            const storagedItems = await AsyncStorage.multiGet([`@Project:user`,`@Project:token`]);
+            if(storagedItems[0][1] && storagedItems[1][1]){
+            setUser(JSON.parse(storagedItems[0][1]));
+            setToken(storagedItems[1][1]);
             }       
         }
         loadStorageData();
@@ -88,9 +88,11 @@ export const AuthProvider: React.FC = ({children}) => {
             
             console.log("Sucesso ao efetuar login")
 
-            await AsyncStorage.setItem(`@Project:token`, response.data.token);
-            await AsyncStorage.setItem(`@Project:user`, JSON.stringify(user));
+            //await AsyncStorage.setItem(`@Project:token`, response.data.token);
+            //await AsyncStorage.setItem(`@Project:user`, JSON.stringify(user));
             
+            await AsyncStorage.multiSet([[`@Project:token`, response.data.token],[`@Project:user`, JSON.stringify(user) ]])
+
             return "Sucesso ao efetuar login";
             
         }

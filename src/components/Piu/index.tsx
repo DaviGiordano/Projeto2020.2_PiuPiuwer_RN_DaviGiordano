@@ -2,13 +2,14 @@ import React, { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { Feather } from '@expo/vector-icons'
 
-import { ActionButton, PiuContainer, PiuFooter, PiuHeader, PiuMain, PiuText, ProfileImage, ProfileName, ProfileUsername } from './styles';
+import { ActionButton, LikeCounter, PiuContainer, PiuFooter, PiuHeader, PiuMain, PiuText, ProfileImage, ProfileName, ProfileUsername } from './styles';
 
 interface PiuProps{
     profileImage?:string;
     profileName:string;
     piuText:string;
     isLiked:boolean;
+    likeCount:number;
     isFavorited:boolean;
     isDeletable:boolean;
     handleDelete():void;
@@ -24,6 +25,7 @@ const Piu: React.FC<PiuProps> = ({
     piuText,
     isDeletable,
     isLiked,
+    likeCount,
     isFavorited,
     handleDelete,
     handleFavorite,
@@ -65,6 +67,7 @@ const Piu: React.FC<PiuProps> = ({
                     <Feather name="heart" color={'red'} size={24}></Feather>
                     : <Feather name="heart" color={'grey'}  size={24}></Feather>
                 }
+                    <LikeCounter>   {likeCount}</LikeCounter>
                 </ActionButton >
                 <ActionButton onPress={()=>{toggleFavorite();}}>
                     {favoritedStatus? 

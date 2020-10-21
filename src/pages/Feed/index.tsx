@@ -1,19 +1,22 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native'
+import { PiuData, useAuth, UserApi } from '../../contexts/auth';
+import { Feather } from '@expo/vector-icons'
+import axios from 'axios';
 
-import { Container, Scroll } from './styles';
 import Piu from '../../components/Piu';
-import { ScrollView } from 'react-native-gesture-handler';
 import Header from '../../components/Header';
 import Textarea from '../../components/Textarea';
-import { PiuData, useAuth, UserApi } from '../../contexts/auth';
-import axios from 'axios';
+
+import { Container, LoadingPius, Scroll } from './styles';
+
 
 const Feed: React.FC = () => {
     
     const { token, user } = useAuth(); 
     const [pius, setPius] = useState<Array<PiuData>>([]);
+    const [loadingPius, setLoadingPius] = useState(true);
 
     const favoritedPiusIdsCallback = useCallback((pius: Array<PiuData>)=>{
         const favoritedPius = pius.filter(piu => {
@@ -52,6 +55,7 @@ const Feed: React.FC = () => {
     },[setPius,favoritedPiusIdsCallback,user]);
 
     const handleGetPius = useCallback(async () => {
+        
         const response = await axios({
         url: 'http://piupiuwer.polijr.com.br/pius/',
         method: 'GET',
@@ -63,6 +67,7 @@ const Feed: React.FC = () => {
         if(response.data){
             //console.log(response.data);
             setSortedPius(response.data);
+            setLoadingPius(false);
             
             console.log({pius: pius});
             //setSortedPius(response.data);
@@ -169,7 +174,7 @@ const Feed: React.FC = () => {
     
           
         });
-        setSortedPius(newPius);
+          setSortedPius(newPius);
         
         const response = await axios({
           url: 'http://piupiuwer.polijr.com.br/pius/dar-like/',
@@ -194,6 +199,7 @@ const Feed: React.FC = () => {
               piuText={item.texto}
               isFavorited={favoritedPiusIds.includes(item.id)}
               isLiked={likedPiusIds.includes(item.id)}
+              likeCount={item.likers.length}
               isDeletable={item.usuario.id == user.id}
               //likeCount={item.likers.length}
               //isFollowing={piusByFollowedUsersIds.includes(item.id)}
@@ -219,7 +225,11 @@ const Feed: React.FC = () => {
             <Header ></Header>
             <Scroll showsVerticalScrollIndicator={false}>
             <Textarea handleSendPiu={sendPiu}/>
-                {renderPius()}
+                {loadingPius?
+                <LoadingPius>
+                  <Feather name='loader' size={30} />
+                </LoadingPius>
+                : renderPius()}
             </Scroll>
             
         </Container>

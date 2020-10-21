@@ -12,3 +12,7 @@ export const Scroll = styled.ScrollView`
     padding-left:10px;
     padding-right:10px;
 `;
+
+export const LoadingPius = styled.View`
+    align-self:center;
+`;

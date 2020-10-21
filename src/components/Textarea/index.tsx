@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { Feather } from '@expo/vector-icons'
 import Input from '../Input'
-import { Container, TextareaComponent, ButtonText, ToggleTextarea, SendButton, Warning } from './styles';
+import { Container, TextareaComponent, ButtonText, ToggleTextarea, SendButton, Warning, TextLenghtCounter } from './styles';
 
 interface TextAreaProps {
   handleSendPiu(text:string):void;
@@ -37,7 +37,7 @@ const Textarea: React.FC<TextAreaProps> = ({handleSendPiu}) => {
       setIsPiuValid(false);
       setWarning('Ultrapassou limite de caracteres (140)');
     }
-    if(text.length != 0 && text.length<140){
+    if(text.length != 0 && text.length<=140){
       setWarning('');
       setIsPiuValid(true);
     }
@@ -55,6 +55,9 @@ const Textarea: React.FC<TextAreaProps> = ({handleSendPiu}) => {
       </ToggleTextarea>
       {isToggled && (
         <Container>
+        <TextLenghtCounter isStyledPiuValid={isPiuValid} >
+          {inputedText.length}/140
+        </TextLenghtCounter>
         <TextareaComponent
         isStyledPiuValid={isPiuValid} 
         value={inputedText}
