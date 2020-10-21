@@ -8,7 +8,6 @@ import AuthRoutes from './auth.routes';
 
 const Routes: React.FC = () => {
     const { user, token } = useAuth();
-    //console.log(token);
     return(
         !!token?
         <AppRoutes/>

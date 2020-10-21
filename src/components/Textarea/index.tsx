@@ -32,7 +32,6 @@ const Textarea: React.FC<TextAreaProps> = ({handleSendPiu}) => {
 
   const handleTextFilter = useCallback((text:string)=>{
     setInputedText(text);
-    console.log(text);
     if(isPiuValid && text.length>140){
       setIsPiuValid(false);
       setWarning('Ultrapassou limite de caracteres (140)');

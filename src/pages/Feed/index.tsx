@@ -49,7 +49,6 @@ const Feed: React.FC = () => {
         newPius.sort((a,b) => Date.parse(b.horario) - Date.parse(a.horario));
         //depois organizar por favoritado
         newPius.sort(compareFavorite);
-        //console.log(newPius)
         setPius(newPius);
         
     },[setPius,favoritedPiusIdsCallback,user]);
@@ -65,13 +64,8 @@ const Feed: React.FC = () => {
         })
 
         if(response.data){
-            //console.log(response.data);
             setSortedPius(response.data);
             setLoadingPius(false);
-            
-            console.log({pius: pius});
-            //setSortedPius(response.data);
-            //console.log(pius)
         }
     },[token,setSortedPius]);
 
@@ -88,18 +82,14 @@ const Feed: React.FC = () => {
                 texto: mensagemInput
             }
         })    
-        console.log({piusantes: pius})
         setSortedPius([response.data, ...pius]);
-        console.log({piusdepois: pius})
         /*ADIÇAO DIRETA DO PIU À LISTA */
         if(response.data){
-            //console.log(pius);
         }
     },[user,token,pius,setSortedPius]);
 
     const delThisPiu = useCallback( async (piu: PiuData)=>{
         const piuId = piu.id
-        console.log(piu.id);
         const response = await axios({
           url: `http://piupiuwer.polijr.com.br/pius/${piuId}`,
           method: 'DELETE',
@@ -107,15 +97,12 @@ const Feed: React.FC = () => {
             Authorization: `JWT ${token}`
           }
         })
-        //7console.log(response);
-        //console.log('Piu Deletado');
         handleGetPius();
     },[token,handleGetPius]);
 
     useEffect(()=>{
         if(!!token){
             handleGetPius();
-            //console.log(favoritedPiusIds);
         }
     },[token]);
 
@@ -140,7 +127,6 @@ const Feed: React.FC = () => {
             : piu;
     
         });
-        //console.log(newPius);
         setSortedPius(newPius);
         const response = await axios({
           url: 'http://piupiuwer.polijr.com.br/pius/favoritar/',

@@ -27,16 +27,9 @@ const Login: React.FC = () => {
     const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false);
 
     const handleSignIn = useCallback(async (usernameInput, passwordInput) => {
-        if(!username || !password){
-            alert('Preencha todos os campos!');
-        }else{
             setIsButtonLoading(true);
             const response = await signIn(usernameInput, passwordInput);
-            if(response == 'usuário ou senha incorreto'){
-                alert('Usuário ou senha incorreto');
-                setIsButtonLoading(false);
-            }            
-        }
+            setIsButtonLoading(false);
     }, [navigate, username, password, signIn, user, token]);
 
     return (

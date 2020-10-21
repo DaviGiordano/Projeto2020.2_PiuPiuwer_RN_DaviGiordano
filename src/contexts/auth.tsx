@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import api from '../services/api';
 import * as auth from '../services/auth';
+import * as Yup from 'yup';
+import { ValidationError } from 'yup';
 import AsyncStorage from '@react-native-community/async-storage';
 export interface UserApi{
     id: number;
@@ -31,14 +33,28 @@ export interface Following{
 export interface AuthContextData {
     user: UserApi;
     token: string;
-    signIn(usernameInput:string, passwordInput:string): Promise<string>;
+    signIn(usernameInput:string, passwordInput:string): Promise<void>;
     signOut(): void;
 }
 
+interface Errors {
+    [key: string]: string;
+}
+
+
+export default function getValidationErrors(error: ValidationError): Errors {
+    const validationErrors: Errors = {};
+
+    error.inner.forEach(error => {
+        validationErrors[error.path] = error.message;
+    });
+
+    return validationErrors;
+	}
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({children}) => {
-    
+
     const [user, setUser] = useState<UserApi>({} as UserApi);
     const [token, setToken] = useState<string>('');
 
@@ -58,44 +74,53 @@ export const AuthProvider: React.FC = ({children}) => {
     },[]);
     /**FUNCTION SIGN IN */
     const signIn = useCallback(async (usernameInput:string, passwordInput:string)=>{
+
+        const dataToApi = {usuario: usernameInput, senha: passwordInput}
+        
+        try {
+            const loginShape = Yup.object().shape({
+                usuario: Yup.string().required('Usuário obrigatório'),
+                senha: Yup.string().required('Senha obrigatória'),
+            });
+            console.log({user: usernameInput,senha:passwordInput})
     
+            await loginShape.validate(dataToApi, {abortEarly: false});
+            const response = await auth.signIn(usernameInput,passwordInput);    
+            
+            if(response){
+                const userResponse = await api.get(`usuarios/?search=${usernameInput}`);
+                const user = userResponse.data[0];
+    
+                setToken(response.data.token);
+                setUser({first_name:user.first_name,
+                        last_name:user.last_name,
+                        id:user.id,
+                        foto:user.foto,
+                        username: user.username,
+                        email: user.email,
+                        sobre: user.sobre,
+                        seguindo: user.seguindo
+                    });
+                
+    
+                await AsyncStorage.multiSet([[`@Project:token`, response.data.token],[`@Project:user`, JSON.stringify(user) ]])
+    
+            }
+            
+        } catch (err) {
+            if (err instanceof Yup.ValidationError) {
+                const errors = getValidationErrors(err);
+                if(!usernameInput){
+                    alert(errors.usuario)
+                }else if(!passwordInput){
+                    alert(errors.senha)
+                }else{
+                    console.log(err)
+                }
+            }
+            
+        }
         
-        const response = await auth.signIn(usernameInput,passwordInput);
-        
-        if(response === "preencha todos os campos") {
-            console.log("preencha todos os campos");
-            return ("preencha todos os campos");
-        }
-        else if(response === "usuário ou senha errado") {
-            console.log("usuário ou senha incorreto")
-            return ("usuário ou senha incorreto");
-        }
-        else {
-            const userResponse = await api.get(`usuarios/?search=${usernameInput}`);
-            //console.log(userResponse);
-            const user = userResponse.data[0];
-
-            setToken(response.data.token);
-            setUser({first_name:user.first_name,
-                    last_name:user.last_name,
-                    id:user.id,
-                    foto:user.foto,
-                    username: user.username,
-                    email: user.email,
-                    sobre: user.sobre,
-                    seguindo: user.seguindo
-                });
-            
-            console.log("Sucesso ao efetuar login")
-
-            //await AsyncStorage.setItem(`@Project:token`, response.data.token);
-            //await AsyncStorage.setItem(`@Project:user`, JSON.stringify(user));
-            
-            await AsyncStorage.multiSet([[`@Project:token`, response.data.token],[`@Project:user`, JSON.stringify(user) ]])
-
-            return "Sucesso ao efetuar login";
-            
-        }
 
     },[]);
     /**FUNCTION SIGN OUT */
