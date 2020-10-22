@@ -90,9 +90,10 @@ const Feed: React.FC = () => {
           texto: mensagemInput,
         },
       });
-      setSortedPius([response.data, ...pius]);
       /*ADIÇAO DIRETA DO PIU À LISTA */
       if (response.data) {
+        setSortedPius([response.data, ...pius]);
+
       }
     },
     [user, token, pius, setSortedPius]
@@ -159,7 +160,7 @@ const Feed: React.FC = () => {
     async (item: PiuData) => {
       const userId = user.id;
       const piuId = item.id;
-
+      
       const newPius = pius.map((piu) => {
         const likersIds = piu.likers.map((user) => user.id);
 
@@ -186,7 +187,7 @@ const Feed: React.FC = () => {
         },
       });
     },
-    [token, user, pius, setSortedPius]
+    [token, user/*, pius, setSortedPius*/]
   );
 
   const renderPius = useCallback(() => {

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { Feather } from "@expo/vector-icons";
 
@@ -41,17 +41,24 @@ const Piu: React.FC<PiuProps> = ({
 }) => {
   const [likedStatus, setLikedStatus] = useState(isLiked);
   const [favoritedStatus, setFavoritedStatus] = useState(isFavorited);
-
+  const [likeForApi, setLikeforApi] = useState(false);
   const toggleLike = useCallback(() => {
     setLikedStatus(!likedStatus);
-    handleLike();
-  }, [setLikedStatus, likedStatus, handleLike]);
+    
+  }, [setLikedStatus, likedStatus]);
+
+  // useEffect(() => {
+  //   handleLike();
+  // }, [likedStatus]);
 
   const toggleFavorite = useCallback(() => {
     setFavoritedStatus(!favoritedStatus);
     handleFavorite();
   }, [setFavoritedStatus, favoritedStatus]);
 
+  // useEffect(() => {
+  //   handleFavorite();
+  // }, [favoritedStatus]);
   return (
     <PiuContainer>
       <PiuHeader>
